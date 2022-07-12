@@ -72,16 +72,34 @@
       <div class="texto">
         <label for="cars"><strong>Selecione a Forma de Pagamento:</strong></label>
         <select name="formapagamento" id="formapagamento">
-          <option value="volvo">Cartão de Crédito</option>
-          <option value="saab">Boleto</option>
-          <option value="mercedes">Pix</option>
+          <option value="cartaodecredito">Cartão de Crédito</option>
+          <option value="boleto">Boleto</option>
+          <option value="pix">Pix</option>
         </select>
+      </div>
+      <div class="texto" v-if="formapagamento == cartaodecredito">
+        <div>
+          <h5>
+            Informações Para Pagamento:
+          </h5>
+        </div>
+        <p>
+          <input type="text" placeholder="Your name" autofocus>
+          <input type="text" placeholder="MM">
+          <input type="text" placeholder="YY">
+        </p>
+        <p>
+          <input type="text" placeholder="4111 1111 1111 1111">
+          <input type="text" placeholder="CVC">
+        </p>
+        <p>
+          <button value="checkout" class="botao">Checkout</button>
+        </p>
       </div>
       <div class="rodapeform">
         <button class="botao" v-on:click="voltarPedido">voltar</button>
         <button class="botao" v-on:click="confirmarPedido">confirmar</button>
-      </div>
-
+      </div>/?
     </div>
   </div>
 
