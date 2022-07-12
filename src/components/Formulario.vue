@@ -3,7 +3,7 @@
     <div class="cabecalhoform">
       <h5 class="texto">Formularios <br>para compra de <br><strong>Pacotes de Adesivos</strong> </h5>
     </div>
-    <div class="corpoform">
+    <div  v-if="pedido.situacao != true" class="corpoform">
       <h5 class="texto">Selecione os adesivos e suas quantidades:</h5>
       <table class="texto">
         <tr>
@@ -46,23 +46,38 @@
       </table>
       
       </div>
-      <div class="texto">
+      <div  v-if="pedido.situacao != true" class="texto">
       <h6>Observações:</h6>
-      <input class="input-texto"  type="text" maxlength="22" v-model="valorobservacao">
+      <input class="input-texto" placeholder="Duvidas? Recados?"  type="text" maxlength="500" v-model="valorobservacao">
       </div>
-      <div v-if="pedido.situacao != true" class="rodapeform"><button class="btn btn-primary" v-on:click="salvarPedido">Continuar</button>
+      <div v-if="pedido.situacao != true " class="rodapeform"><button class="btn btn-primary" v-on:click="salvarPedido">Continuar</button>
       </div>
    
     <div class="checkout"  v-if="pedido.situacao != false">
-    <div>
+    <div class="texto">
       <h5>Verifique seu pedido:</h5>
       <p>React:{{pedido.reactqtd}}</p>
       <p>Vue:{{pedido.vueqtd}}</p>
       <p>Angular:{{pedido.angularqtd}}</p>
+      <p>Total de Adesivos:{{totaladesivos}}</p>
+      <p>Total R$:{{totalapagar}}</p>
     </div>
-    <div>
-      <button v-on:click="confirmarPedido">confirmar</button>
-      <button v-on:click="voltarPedido">voltar</button>
+    <div class="texto">
+    <h5>Cupom de Desconto:</h5>
+    <input v-model="cupom" type="text">
+    <button v-on:click="aplicarCupom">Aplicar Cupom</button>
+    </div>
+    <div class="texto">
+    <label for="cars"><strong>Selecione a Forma de Pagamento:</strong></label>
+    <select name="formapagamento" id="formapagamento">
+      <option value="volvo">Cartão de Crédito</option>
+      <option value="saab">Boleto</option>
+      <option value="mercedes">Pix</option>
+    </select>
+    </div>
+    <div class="rodapeform">
+      <button class="btn btn-primary" v-on:click="voltarPedido">voltar</button>
+      <button class="btn btn-primary" v-on:click="confirmarPedido">confirmar</button>
     </div>
       
     </div>
@@ -71,6 +86,8 @@
 </template>
 <script>
 
+
+
 export default{
     data(){
         
@@ -78,6 +95,11 @@ export default{
           react:Number = 0,
           vue:Number = 0,
           angular:Number = 0,
+          totaladesivos:Number ,
+          totalapagar:Number,
+          valoradesivo:Number = 0.50,
+          validarcupom:Boolean = true,
+          
           
 
           pedido:{
@@ -86,6 +108,11 @@ export default{
           angularqtd:Number,
           observacao:String,
           situacao:Boolean = false
+          ,
+
+          totalAdesivos(){
+            return this.reactqtd+this.vueqtd+this.angularqtd
+          }
           }}
           
         
@@ -97,7 +124,16 @@ export default{
           this.pedido.angularqtd = this.angular
           this.pedido.observacao = this.valorobservacao
           this.pedido.situacao = true
+          this.totaladesivos = this.pedido.totalAdesivos()
+          this.totalapagar = this.pedido.totalAdesivos() * this.valoradesivo
           console.log(this.pedido)
+        },
+        aplicarCupom(){
+          if(this.cupom=='BEMPAGGO'&&this.validarcupom==true){
+            this.totalapagar = this.totalapagar - (this.totalapagar * 0.15)
+            this.validarcupom = false
+          }
+          
         },
 
         confirmarPedido(){
@@ -105,6 +141,8 @@ export default{
         },
         voltarPedido(){
           this.pedido.situacao = false
+          this.validarcupom = true
+
         },
         addReact(){
           this.react++
@@ -187,8 +225,8 @@ export default{
 .cabecalhoform{
   height: 200px;
   border-bottom-left-radius:30%;
-      border-bottom-right-radius:70%;
-      background-color: rgba(28, 5, 131, 0.877);
+  border-bottom-right-radius:70%;
+  background-color: rgba(28, 5, 131, 0.877);
   color: aliceblue;
 }
 .rodapeform{
@@ -203,7 +241,6 @@ export default{
 }
 .checkout{
   margin-top: 10px;
-  background-color: rgba(128, 128, 128, 0.493);
 }
 .texto{
   margin: 5px 30px 0px 30px;
@@ -212,12 +249,14 @@ export default{
 .input-texto{
   margin: 5px 30px 10px 30px;
   height: 100px;
+  border-radius: 10px;
   width: 300px;
   text-align:start;
+  background-color: rgba(187, 187, 187, 0.822);
 }
 .observacoes{
   display: block;
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 </style>
