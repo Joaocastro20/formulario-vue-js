@@ -64,12 +64,12 @@
         <p>Total de Adesivos:{{ totaladesivos }}</p>
         <p>Total R$:{{ totalapagar }}</p>
       </div>
-      <div class="texto">
+      <div class="texto-espaco">
         <h5>Cupom de Desconto:</h5>
         <input v-model="cupom" placeholder="BEMPAGGO" type="text">
         <button class="botao" v-on:click="aplicarCupom">Aplicar Cupom</button>
       </div>
-      <div class="texto">
+      <div class="texto-espaco">
         <label for="cars"><strong>Selecione a Forma de Pagamento:</strong></label>
         <button v-on:click="formaPagamento('cartaodecredito')" class="botao">Cartão de Crédito</button>
         <button v-on:click="formaPagamento('boleto')" class="botao">Boleto</button>
@@ -87,17 +87,38 @@
           <input type="text" placeholder="YY">
         </p>
         <p>
-          <input type="text" placeholder="4111 1111 1111 1111">
-          <input type="text" placeholder="CVC">
+          <input type="text" placeholder="1111 1111 1111 1111">
+          <input type="text" placeholder="CVC" maxlength="4">
         </p>
         <p>
-          <button v-on:click="checkoutCartao" value="checkout" class="botao">Checkout</button>
+          <button v-on:click="checkoutCartao" value="checkout" class="botao">Salvar</button>
         </p>
       </div>
-      <div class="texto" v-if="pedido.formapagamento == 'boleto'">
-        <button>Gerar Boleto</button>
+      <div class="texto-boleto" v-if="pedido.formapagamento == 'boleto'">
+        <button v-on:click="gerarBoleto" ><img width="100" height="60" src="https://blitzlingerie.com.br/wp-content/uploads/2018/03/boleto.png"/></button>
       </div>
       <div class="texto" v-if="pedido.formapagamento == 'pix'">
+      <div class="row">
+        <div class="col">
+          <table>
+            <tr>
+              <td>Pix exemplo:</td>
+              <td>xxxx-xxxx</td>
+            </tr>
+            <tr>
+              <td>Pix exemplo:</td>
+              <td>xxxx-xxxx</td>
+            </tr>
+            <tr>
+              <td>Pix exemplo:</td>
+              <td>xxxx-xxxx</td>
+            </tr>
+          </table>
+        </div>
+        <div class="col">
+          <img height="200" width="200" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADIAQAAAACFI5MzAAABuUlEQVR4Xu2WXYrGIAxFBbcluHUh2wo492j/5mPmLZl5aVqK9hQ012tsmb9F+XxxxUteQvwlGaXUaaP0Uap3W90MYrrNvFRzwU43h4yq5mh9jk57dZMId6u2HpnE+/Q6SpO0eQSod3wiTjeFYAm748M7cYRwOcNYPKW8I57I6NJy+UO5emsNGk/0yhuwiK9pEAnE9s4iWTaYVi+FmFf1B6NL0bVsKUTmw+UrRUx/Oz6WMAN1lKoUXf4/ZxBLtHJaOwnZqa8yyO34WOIyh/TUJPBi4asc0gcuH8e5IYFTiEzhHEviuNG35eMJM1B6KksDM+p6ZhpHWLTD8Ry1y5EZRIdfZWypqg38dHwsMTbVdryM8qx8wUT7SqWPqVAyjnY8ocCSpU1conPpcnww4QT0LqOo2ZoMfyoaTGSLY3RpeRgkgVBfJWvp1FrHJZfWsUQKGnZkyZaaZ6bBZI1OMZo80TeFEBQHfdCoriSeQXAINaLiSfyRRIybiqcHLuRKISpB+6ehL0EfWscTacprzUK19so0nuDz3djLmEF0k6pR8zSB/k3rODLQ0CjnbDJ//KHEkp/jJS8h/p98AfW5cSfQJ/lzAAAAAElFTkSuQmCC" alt="">
+        </div>
+      </div>
       </div>
       <div class="rodapeform">
         <button class="botao" v-on:click="voltarPedido">voltar</button>
@@ -167,6 +188,9 @@ export default {
     },
     checkoutCartao() {
       alert('em processo!')
+    },
+    gerarBoleto(){
+      alert('Boleto gerado!')
     }
 
     ,
@@ -289,6 +313,15 @@ export default {
 .texto {
   margin: 5px 30px 0px 30px;
   font-weight: 300;
+}
+.texto-espaco{
+  margin: 20px 30px 20px 30px;
+  font-weight: 300;
+}
+.texto-boleto{
+  margin: 20px 30px 20px 30px;
+  font-weight: 300;
+  text-align: center;
 }
 
 .input-texto {
