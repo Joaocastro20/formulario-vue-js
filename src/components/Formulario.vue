@@ -71,13 +71,11 @@
       </div>
       <div class="texto">
         <label for="cars"><strong>Selecione a Forma de Pagamento:</strong></label>
-        <select name="formapagamento" id="formapagamento">
-          <option value="cartaodecredito">Cartão de Crédito</option>
-          <option value="boleto">Boleto</option>
-          <option value="pix">Pix</option>
-        </select>
+        <button v-on:click="formaPagamento('cartaodecredito')" class="botao">Cartão de Crédito</button>
+        <button v-on:click="formaPagamento('boleto')" class="botao">Boleto</button>
+        <button v-on:click="formaPagamento('pix')" class="botao">Pix</button>
       </div>
-      <div class="texto" v-if="formapagamento == cartaodecredito">
+      <div class="texto" v-if="pedido.formapagamento == 'cartaodecredito'">
         <div>
           <h5>
             Informações Para Pagamento:
@@ -93,13 +91,18 @@
           <input type="text" placeholder="CVC">
         </p>
         <p>
-          <button value="checkout" class="botao">Checkout</button>
+          <button v-on:click="checkoutCartao" value="checkout" class="botao">Checkout</button>
         </p>
+      </div>
+      <div class="texto" v-if="pedido.formapagamento == 'boleto'">
+        <button>Gerar Boleto</button>
+      </div>
+      <div class="texto" v-if="pedido.formapagamento == 'pix'">
       </div>
       <div class="rodapeform">
         <button class="botao" v-on:click="voltarPedido">voltar</button>
         <button class="botao" v-on:click="confirmarPedido">confirmar</button>
-      </div>/?
+      </div>
     </div>
   </div>
 
@@ -122,13 +125,15 @@ export default {
 
 
 
+
       pedido: {
         reactqtd: Number,
         vueqtd: Number,
         angularqtd: Number,
         observacao: String,
-        situacao: Boolean = false
-        ,
+        situacao: Boolean = false,
+        formapagamento: '',
+
 
         totalAdesivos() {
           return this.reactqtd + this.vueqtd + this.angularqtd
@@ -156,6 +161,15 @@ export default {
       }
 
     },
+    formaPagamento(forma) {
+      this.pedido.formapagamento = forma
+      console.log(this.formapagamento)
+    },
+    checkoutCartao() {
+      alert('em processo!')
+    }
+
+    ,
 
     confirmarPedido() {
       alert('pedido realizado')
